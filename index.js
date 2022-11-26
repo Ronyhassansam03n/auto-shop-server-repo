@@ -22,7 +22,9 @@ async function run() {
 
         const categoriesCollection = client.db('autoshop').collection('brandsCategories');
         const productCollection = client.db('autoshop').collection('products');
-        const bookingCarCollection = client.db('autoshop').collection('bookings')
+        const bookingCarCollection = client.db('autoshop').collection('bookings');
+        const usersCollection = client.db('autoshop').collection('users');
+
 
         //categories
 
@@ -48,6 +50,13 @@ async function run() {
 
         //bookings 
 
+        app.get('/bookings', async (req, res) => {
+            const email = req.query.email;
+            const query = { email: email }
+            const bookings = await bookingCarCollection.find(query).toArray();
+            res.send(bookings)
+
+        })
 
         app.post('/bookings', async (req, res) => {
             const booking = req.body
@@ -55,6 +64,15 @@ async function run() {
             const result = await bookingCarCollection.insertOne(booking)
             res.send(result)
 
+
+        })
+
+        //users
+
+        app.post('/users', async (req, res) => {
+            const myUser = req.body
+            const result = await usersCollection.insertOne(myUser)
+            res.send(result)
 
         })
 
