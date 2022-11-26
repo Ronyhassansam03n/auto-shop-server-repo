@@ -22,7 +22,9 @@ async function run() {
 
         const categoriesCollection = client.db('autoshop').collection('brandsCategories');
         const productCollection = client.db('autoshop').collection('products');
+        const bookingCarCollection = client.db('autoshop').collection('bookings')
 
+        //categories
 
         app.get('/brandsCategories', async (req, res) => {
             const query = {};
@@ -30,6 +32,8 @@ async function run() {
             res.send(category);
 
         })
+
+        //products
 
         app.get('/products-car', async (req, res) => {
 
@@ -42,6 +46,17 @@ async function run() {
 
         })
 
+        //bookings 
+
+
+        app.post('/bookings', async (req, res) => {
+            const booking = req.body
+            console.log(booking)
+            const result = await bookingCarCollection.insertOne(booking)
+            res.send(result)
+
+
+        })
 
 
     }
