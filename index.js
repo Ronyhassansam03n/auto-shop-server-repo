@@ -44,6 +44,9 @@ async function run() {
         })
 
 
+
+
+
         //products
 
         app.get('/products-car', async (req, res) => {
@@ -93,6 +96,21 @@ async function run() {
             const user = await usersCollection.findOne(query);
             res.send({ isSeller: user?.seller === true });
         })
+        app.get('/users/seller', async (req, res) => {
+            const email = req.params.email
+            const query = { seller: true }
+            const seller = await usersCollection.find(query).toArray();
+            res.send(seller);
+        })
+
+        app.delete('/users/seller/:id', async (req, res) => {
+            const id = req.params.id;
+            const filter = { _id: ObjectId(id) }
+            const result = await usersCollection.deleteOne(filter);
+            res.send(result);
+        })
+
+
 
 
 
@@ -142,12 +160,19 @@ async function run() {
 
 
         app.get('/addProducts', async (req, res) => {
-
             const query = {}
             const products = await addProductsCollection.find(query).toArray();
             res.send(products)
 
         })
+        app.get('/addProducts/:email', async (req, res) => {
+            const email = req.query.email
+            const query = { email: email }
+            const products = await addProductsCollection.find(query).toArray();
+            res.send(products)
+
+        })
+
 
 
         app.post('/addProducts', async (req, res) => {
